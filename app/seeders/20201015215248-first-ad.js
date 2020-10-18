@@ -7,18 +7,23 @@ const {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const title = 'Fancy chair'
     const user = await User.findAll({ limit: 1 })
-    await queryInterface.bulkInsert('Ads', [{
-      id: uuidv4(),
-      name: title,
-      slug: slugify(title, { lower: true }),
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed fringilla sapien.',
-      price: 100,
-      UserId: user.length ? user.shift().id : null,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {})
+    const userId = user.length ? user.shift().id : null
+    let items = []
+    for (let i = 0; i < 10; i++) {
+      const title = `Fancy chair ${i}`
+      items.push({
+        id: uuidv4(),
+        name: title,
+        slug: slugify(title, { lower: true }),
+        desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed fringilla sapien.',
+        price: 100,
+        UserId: userId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+    }
+    await queryInterface.bulkInsert('Ads', items, {})
   },
 
   down: async (queryInterface, Sequelize) => {

@@ -37,7 +37,7 @@ app.use(session({
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 2 * 60 * 60 * 1000 }
 }))
 
 require('./app/middleware/passport')
@@ -48,7 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(express.static('front/public'))
+app.use(express.static('front/public/'))
 
 app.engine('hbs', hbs({
   extname: 'hbs',

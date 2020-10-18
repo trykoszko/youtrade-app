@@ -4,6 +4,6 @@ module.exports = {
     async index(req, res) {
         res
             .status(200)
-            .sendFile(path.join(__dirname, '../../public', 'index.html'))
+            .sendFile(path.join(__dirname, '../../public/public', 'index.html'))
     }
 }
