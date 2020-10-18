@@ -2,10 +2,11 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Ads', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        defaultValue: Sequelize.UUIDV4,
+        autoincrement: true,
+        allowNull: false
       },
       slug: {
         type: Sequelize.STRING
@@ -20,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       UserId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,

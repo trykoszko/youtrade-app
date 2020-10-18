@@ -5,9 +5,14 @@ const helmet = require('helmet')
 const path = require('path')
 const cors = require('cors')
 const hbs = require('express-handlebars')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const passport = require('passport')
+
+const testSequelize = require('./app/middleware/sequelize-test')
 
 require('dotenv').config()
-require('./app/controllers/mailer')
+require('./app/helpers/mailer')
 require('./app/models')
 
 const forceHTTPS = require('./app/middleware/require-https')
@@ -26,10 +31,23 @@ app.use(function(err, req, res, next) {
   console.log('Error!: ', err)
 })
 
+app.use(cookieParser(process.env.SECRET))
+app.set('trust proxy', 1)
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}))
+
+require('./app/middleware/passport')
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// serve gatsby from static
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(express.static('front/public'))
 
 app.engine('hbs', hbs({
@@ -41,8 +59,9 @@ app.engine('hbs', hbs({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'app/views'))
 
+app.use(testSequelize)
+
 require('./app/routes/index')(app)
-require('./app/routes/admin')(app)
 
 // if (process.env.NODE_ENV === 'development') {
 //   db.sequelize.sync({ force: true }).then(async () => {

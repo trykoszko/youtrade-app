@@ -1,4 +1,5 @@
 const slugify = require('slugify')
+const { v4: uuidv4 } = require('uuid')
 
 const {
   User
@@ -9,6 +10,7 @@ module.exports = {
     const title = 'Fancy chair'
     const user = await User.findAll({ limit: 1 })
     await queryInterface.bulkInsert('Ads', [{
+      id: uuidv4(),
       name: title,
       slug: slugify(title, { lower: true }),
       desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed fringilla sapien.',

@@ -1,20 +1,19 @@
-const DB_PREFIX = process.env.DB_PREFIX
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Images', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        defaultValue: Sequelize.UUIDV4,
+        autoincrement: true,
+        allowNull: false
       },
       url: {
         type: Sequelize.STRING,
         allowNull: false
       },
       AdId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       createdAt: {
         allowNull: false,

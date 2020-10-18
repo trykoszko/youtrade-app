@@ -4,9 +4,10 @@ const hashPassword = require('../helpers/hashPassword')
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
     },
     username: { type: DataTypes.STRING, allowNull: false, unique: true },
     nicename: { type: DataTypes.STRING, allowNull: false },

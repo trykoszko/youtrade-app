@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 
-const SALT_ROUNDS = 10
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS)
 
 function hashPassword(user) {
   if (user.changed('password')) {

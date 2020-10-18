@@ -3,13 +3,29 @@ const path = require('path')
 const randomstring = require('randomstring')
 const Handlebars = require('handlebars')
 
-const Ad = require('../models').Ad
+const {
+    Ad,
+    Image
+} = require('../models')
 
 // e-mail templates
 const source = fs.readFileSync(path.join(__dirname, '../views/emails', 'email.hbs'))
 const hbs = Handlebars.compile(source.toString())
 
 module.exports = {
+
+    async index(req, res) {
+        const ads = await Ad.findAll({
+            include: [
+                {
+                    model: Image
+                }
+            ]
+        })
+        res
+            .status(200)
+            .json(ads)
+    },
 
     async add(req, res) {
         if (!req.body.email) {
@@ -110,7 +126,6 @@ module.exports = {
                 })
             })
             .catch(err => {
-                console.log('err', err)
                 res
                     .status(400)
                     .send({
