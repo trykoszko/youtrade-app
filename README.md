@@ -1,4 +1,4 @@
-# youtrade-app [in progress]
+# Express.js `youtrade-app` [in progress]
 
 A Node & Express demo CRUD app
 
